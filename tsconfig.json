@@ -1,20 +1,5 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD
-    "target": "ES6",
-    "module": "commonjs",
-    "rootDir": "./src",
-    "outDir": "./dist",
-
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
-}
-=======
     "target": "es5",
     "lib": [
       "dom",
@@ -39,4 +24,3 @@
     "src"
   ]
 }
->>>>>>> 2aa10d99766fc2789fe7910e1ca9b501a62c39e9
