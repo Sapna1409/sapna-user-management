@@ -12,7 +12,7 @@ const app = (0, express_1.default)();
 const PORT = 8000;
 // ✅ Middlewares
 app.use((0, cors_1.default)({
-    origin: "http://localhost:3000"
+    origin: "http://https://sapna-backend-api.onrender.com :3000"
 }));
 app.use(express_1.default.json());
 // ✅ Routes
@@ -22,7 +22,7 @@ dbConfig_1.AppDataSource.initialize()
     .then(() => {
     console.log("✅ Database Connected");
     app.listen(PORT, () => {
-        console.log(`🚀 Server running on http://localhost:${PORT}`);
+        console.log(`🚀 Server running on http://https://sapna-backend-api.onrender.com :${PORT}`);
     });
 })
     .catch((error) => {

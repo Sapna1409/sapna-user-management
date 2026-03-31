@@ -20,7 +20,7 @@ AppDataSource.initialize()
     console.log("✅ Database Connected");
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(`🚀 Server running on http://https://sapna-backend-api.onrender.com :${PORT}`);
     });
   })
   .catch((error) => {
