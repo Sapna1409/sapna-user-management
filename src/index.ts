@@ -1,28 +1,44 @@
-import "reflect-metadata";
 import express from "express";
 import cors from "cors";
-import { AppDataSource } from "./dbconfig/dbConfig";
-import userRoutes from "./routes/userRoutes";
 
 const app = express();
-const PORT = 8000;
 
-// ✅ Middlewares
+// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ Routes
-app.use("/", userRoutes);
+// ✅ Dummy database (temporary)
+let users: { name: string; email: string }[] = [];
 
-// ✅ DB connect + server start
-AppDataSource.initialize()
-  .then(() => {
-    console.log("✅ Database Connected");
+// ✅ GET all users
+app.get("/users", (req, res) => {
+  res.json(users);
+});
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://https://sapna-backend-api.onrender.com :${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error("❌ Database connection error:", error);
+// ✅ ADD user
+app.post("/users", (req, res) => {
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ message: "Name and Email required" });
+  }
+
+  const newUser = { name, email };
+  users.push(newUser);
+
+  res.json({
+    message: "User added successfully",
+    user: newUser,
   });
+});
+
+// ✅ Root route (test ke liye)
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
+// ✅ Server start
+const PORT = 8000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
