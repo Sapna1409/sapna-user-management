@@ -3,19 +3,19 @@ import cors from "cors";
 
 const app = express();
 
-// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ Dummy database (temporary)
 let users: { name: string; email: string }[] = [];
 
-// ✅ GET all users
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
 app.get("/users", (req, res) => {
   res.json(users);
 });
 
-// ✅ ADD user
 app.post("/users", (req, res) => {
   const { name, email } = req.body;
 
@@ -26,19 +26,11 @@ app.post("/users", (req, res) => {
   const newUser = { name, email };
   users.push(newUser);
 
-  res.json({
-    message: "User added successfully",
-    user: newUser,
-  });
+  res.json({ message: "User added", user: newUser });
 });
 
-// ✅ Root route (test ke liye)
-app.get("/", (req, res) => {
-  res.send("API is running 🚀");
-});
+const PORT = process.env.PORT || 8000;
 
-// ✅ Server start
-const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
