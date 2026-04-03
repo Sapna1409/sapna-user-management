@@ -1,36 +1,52 @@
+import "reflect-metadata";
 import express from "express";
 import cors from "cors";
+import { AppDataSource } from "./dbconfig/dbConfig";
+import { User } from "./entities/User";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-let users: { name: string; email: string }[] = [];
+const PORT = process.env.PORT || 8000;
 
-app.get("/", (req, res) => {
-  res.send("API is running 🚀");
-});
-
-app.get("/users", (req, res) => {
+// ✅ GET users
+app.get("/users", async (req, res) => {
+  const repo = AppDataSource.getRepository(User);
+  const users = await repo.find();
   res.json(users);
 });
 
-app.post("/users", (req, res) => {
+// ✅ ADD user
+app.post("/users", async (req, res) => {
   const { name, email } = req.body;
 
   if (!name || !email) {
-    return res.status(400).json({ message: "Name and Email required" });
+    return res.status(400).json({ message: "Name & Email required" });
   }
 
-  const newUser = { name, email };
-  users.push(newUser);
+  const repo = AppDataSource.getRepository(User);
+  const newUser = repo.create({ name, email });
+  await repo.save(newUser);
 
   res.json({ message: "User added", user: newUser });
 });
 
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// ✅ Root route
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
 });
+
+// ✅ Start server AFTER DB connect
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Database connected ✅");
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("DB Error:", error);
+  });
